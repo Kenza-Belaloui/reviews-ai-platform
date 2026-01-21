@@ -18,8 +18,8 @@ async function submit() {
     await auth.login({ email: email.value, password: password.value })
     toast.show("Connexion réussie ✅", "success")
     router.push("/")
-  } catch (e) {
-    toast.show("Erreur login (vérifie email/mot de passe)", "error")
+  } catch {
+    toast.show("Identifiants incorrects", "error")
   } finally {
     loading.value = false
   }
@@ -28,27 +28,34 @@ async function submit() {
 
 <template>
   <div class="space-y-4">
-    <h1 class="text-2xl font-bold">Connexion</h1>
-    <p class="text-sm text-slate-500 dark:text-slate-400">Accède à ton dashboard et tes reviews.</p>
-
-    <div class="space-y-2">
-      <label class="text-sm">Email</label>
-      <input v-model="email" type="email" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950" />
+    <div>
+      <h1 class="text-xl font-bold">Connexion</h1>
+      <p class="muted">Accède à ton dashboard et gère tes reviews.</p>
     </div>
 
     <div class="space-y-2">
-      <label class="text-sm">Mot de passe</label>
-      <input v-model="password" type="password" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950" />
+      <label class="label">Email</label>
+      <input v-model="email" type="email" class="input" placeholder="admin@reviews.local" />
     </div>
 
-    <button @click="submit" :disabled="loading"
-      class="w-full px-4 py-2 rounded-xl bg-slate-900 text-white disabled:opacity-60">
+    <div class="space-y-2">
+      <label class="label">Mot de passe</label>
+      <input v-model="password" type="password" class="input" placeholder="••••••••" />
+    </div>
+
+    <button class="btn-primary w-full" :disabled="loading" @click="submit">
       {{ loading ? "Connexion..." : "Se connecter" }}
     </button>
 
-    <p class="text-sm text-center text-slate-500 dark:text-slate-400">
-      Pas de compte ?
-      <router-link class="underline" to="/auth/register">Créer un compte</router-link>
-    </p>
+    <div class="flex items-center justify-between text-sm">
+      <span class="muted">Pas de compte ?</span>
+      <router-link class="font-semibold underline" to="/auth/register">Créer un compte</router-link>
+    </div>
+
+    <div class="rounded-xl border border-slate-200 dark:border-slate-800 p-3 text-xs text-slate-600 dark:text-slate-300">
+      <div class="font-semibold mb-1">Admin (test)</div>
+      <div>Email: <b>admin@reviews.local</b></div>
+      <div>Pass: <b>Admin12345!</b></div>
+    </div>
   </div>
 </template>

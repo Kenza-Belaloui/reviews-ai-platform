@@ -19,8 +19,8 @@ async function submit() {
     await auth.register({ name: name.value, email: email.value, password: password.value })
     toast.show("Compte créé ✅", "success")
     router.push("/")
-  } catch (e) {
-    toast.show("Erreur register (email déjà utilisé ?)", "error")
+  } catch {
+    toast.show("Impossible de créer le compte (email déjà utilisé ?)", "error")
   } finally {
     loading.value = false
   }
@@ -29,31 +29,33 @@ async function submit() {
 
 <template>
   <div class="space-y-4">
-    <h1 class="text-2xl font-bold">Créer un compte</h1>
-
-    <div class="space-y-2">
-      <label class="text-sm">Nom</label>
-      <input v-model="name" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950" />
+    <div>
+      <h1 class="text-xl font-bold">Créer un compte</h1>
+      <p class="muted">Rejoins la plateforme et analyse tes avis.</p>
     </div>
 
     <div class="space-y-2">
-      <label class="text-sm">Email</label>
-      <input v-model="email" type="email" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950" />
+      <label class="label">Nom</label>
+      <input v-model="name" class="input" placeholder="Kenza" />
     </div>
 
     <div class="space-y-2">
-      <label class="text-sm">Mot de passe</label>
-      <input v-model="password" type="password" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-950" />
+      <label class="label">Email</label>
+      <input v-model="email" type="email" class="input" placeholder="kenza@test.com" />
     </div>
 
-    <button @click="submit" :disabled="loading"
-      class="w-full px-4 py-2 rounded-xl bg-slate-900 text-white disabled:opacity-60">
+    <div class="space-y-2">
+      <label class="label">Mot de passe</label>
+      <input v-model="password" type="password" class="input" placeholder="min 8 caractères" />
+    </div>
+
+    <button class="btn-primary w-full" :disabled="loading" @click="submit">
       {{ loading ? "Création..." : "Créer" }}
     </button>
 
-    <p class="text-sm text-center text-slate-500 dark:text-slate-400">
-      Déjà un compte ?
-      <router-link class="underline" to="/auth/login">Se connecter</router-link>
-    </p>
+    <div class="flex items-center justify-between text-sm">
+      <span class="muted">Déjà un compte ?</span>
+      <router-link class="font-semibold underline" to="/auth/login">Se connecter</router-link>
+    </div>
   </div>
 </template>
