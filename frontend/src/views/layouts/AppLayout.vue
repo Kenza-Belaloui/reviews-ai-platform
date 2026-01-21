@@ -30,7 +30,7 @@ async function doLogout() {
           </div>
           <div class="flex gap-2">
             <button class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700" @click="toggleTheme()">🌓</button>
-            <button class="px-3 py-2 rounded-xl bg-slate-900950? border border-slate-200 dark:border-slate-700" @click="doLogout">Logout</button>
+            <button class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700" @click="doLogout">Logout</button>
           </div>
         </header>
 
