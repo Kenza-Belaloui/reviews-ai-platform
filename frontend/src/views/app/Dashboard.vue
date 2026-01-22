@@ -3,6 +3,7 @@ import { onMounted, ref } from "vue"
 import { http } from "../../lib/http"
 import { useToastStore } from "../../stores/toast"
 import SentimentChart from "../../components/SentimentChart.vue"
+import { downloadCsv } from "../../lib/download"
 
 const toast = useToastStore()
 const loading = ref(true)
@@ -19,6 +20,16 @@ async function load() {
     loading.value = false
   }
 }
+
+async function exportCsv() {
+  try {
+    await downloadCsv("/export/reviews.csv", "reviews.csv")
+    toast.show("Export CSV téléchargé ✅", "success")
+  } catch {
+    toast.show("Export CSV impossible (token/back)", "error")
+  }
+}
+
 
 function pill(sentiment) {
   if (sentiment === "positive") return "bg-green-500/15 text-green-200 border-green-500/30"
@@ -37,12 +48,22 @@ onMounted(load)
         <p class="text-sm text-slate-300">Vue d’ensemble ({{ data?.scope || "..." }})</p>
       </div>
 
-      <button
-        class="px-3 py-2 rounded-xl border border-slate-700/60 hover:bg-white/5 text-sm"
-        @click="load"
-      >
-        ↻ Refresh
-      </button>
+      <div class="flex gap-2">
+        <button
+          class="px-3 py-2 rounded-xl border border-slate-700/60 hover:bg-white/5 text-sm"
+          @click="exportCsv"
+        >
+          Export CSV
+        </button>
+
+        <button
+          class="px-3 py-2 rounded-xl border border-slate-700/60 hover:bg-white/5 text-sm"
+          @click="load"
+        >
+          ↻ Refresh
+        </button>
+      </div>
+
     </div>
 
     <!-- KPI -->

@@ -26,4 +26,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/dashboard', DashboardController::class);
 
     Route::get('/export/reviews.csv', [ExportController::class, 'reviewsCsv']);
+    
+    Route::get('/reviews', [ReviewController::class, 'index']);
+
+    Route::post('/reviews', [ReviewController::class, 'store']);
+    
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 });
