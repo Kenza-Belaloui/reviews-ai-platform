@@ -11,6 +11,7 @@ const toast = useToastStore()
 const name = ref("")
 const email = ref("")
 const password = ref("")
+const show = ref(false)
 const loading = ref(false)
 
 async function submit() {
@@ -19,8 +20,8 @@ async function submit() {
     await auth.register({ name: name.value, email: email.value, password: password.value })
     toast.show("Compte créé ✅", "success")
     router.push("/")
-  } catch {
-    toast.show("Impossible de créer le compte (email déjà utilisé ?)", "error")
+  } catch (e) {
+    toast.show("Création impossible : email déjà utilisé ?", "error")
   } finally {
     loading.value = false
   }
@@ -28,34 +29,65 @@ async function submit() {
 </script>
 
 <template>
-  <div class="space-y-4">
-    <div>
-      <h1 class="text-xl font-bold">Créer un compte</h1>
-      <p class="muted">Rejoins la plateforme et analyse tes avis.</p>
-    </div>
-
+  <div class="space-y-6">
     <div class="space-y-2">
-      <label class="label">Nom</label>
-      <input v-model="name" class="input" placeholder="Kenza" />
+      <div class="text-2xl font-bold tracking-tight">Créer un compte</div>
+      <p class="text-sm text-slate-300">
+        Crée ton espace et commence à analyser des reviews.
+      </p>
     </div>
 
-    <div class="space-y-2">
-      <label class="label">Email</label>
-      <input v-model="email" type="email" class="input" placeholder="kenza@test.com" />
+    <div class="space-y-3">
+      <div class="space-y-2">
+        <label class="text-xs uppercase tracking-wide text-slate-300">Nom</label>
+        <input
+          v-model="name"
+          placeholder="ex: Kenza"
+          class="w-full px-4 py-3 rounded-2xl border border-slate-700/60 bg-white/5 focus:outline-none focus:ring-2 focus:ring-indigo-500/60"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-xs uppercase tracking-wide text-slate-300">Email</label>
+        <input
+          v-model="email"
+          type="email"
+          placeholder="ex: kenna@test.com"
+          class="w-full px-4 py-3 rounded-2xl border border-slate-700/60 bg-white/5 focus:outline-none focus:ring-2 focus:ring-indigo-500/60"
+        />
+      </div>
+
+      <div class="space-y-2">
+        <label class="text-xs uppercase tracking-wide text-slate-300">Mot de passe</label>
+        <div class="relative">
+          <input
+            v-model="password"
+            :type="show ? 'text' : 'password'"
+            placeholder="••••••••"
+            class="w-full px-4 py-3 pr-12 rounded-2xl border border-slate-700/60 bg-white/5 focus:outline-none focus:ring-2 focus:ring-indigo-500/60"
+          />
+          <button
+            type="button"
+            class="absolute right-3 top-1/2 -translate-y-1/2 text-sm px-2 py-1 rounded-lg border border-slate-700/60 hover:bg-white/5"
+            @click="show = !show"
+          >
+            {{ show ? "Hide" : "Show" }}
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div class="space-y-2">
-      <label class="label">Mot de passe</label>
-      <input v-model="password" type="password" class="input" placeholder="min 8 caractères" />
-    </div>
-
-    <button class="btn-primary w-full" :disabled="loading" @click="submit">
-      {{ loading ? "Création..." : "Créer" }}
+    <button
+      @click="submit"
+      :disabled="loading"
+      class="w-full px-4 py-3 rounded-2xl bg-indigo-500 hover:bg-indigo-400 text-slate-950 font-semibold disabled:opacity-60"
+    >
+      {{ loading ? "Création..." : "Créer le compte" }}
     </button>
 
-    <div class="flex items-center justify-between text-sm">
-      <span class="muted">Déjà un compte ?</span>
-      <router-link class="font-semibold underline" to="/auth/login">Se connecter</router-link>
+    <div class="flex items-center justify-between text-sm text-slate-300">
+      <span>Déjà un compte ?</span>
+      <router-link class="underline hover:text-white" to="/auth/login">Se connecter</router-link>
     </div>
   </div>
 </template>
