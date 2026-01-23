@@ -11,3 +11,8 @@ http.interceptors.request.use((config) => {
   if (auth.token) config.headers.Authorization = `Bearer ${auth.token}`
   return config
 })
+
+export function setAuthToken(token) {
+  if (token) http.defaults.headers.common.Authorization = `Bearer ${token}`
+  else delete http.defaults.headers.common.Authorization
+}

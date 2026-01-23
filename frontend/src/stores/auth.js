@@ -1,32 +1,41 @@
 import { defineStore } from "pinia"
-import { http } from "../lib/http"
+import router from "../router"
+import { http, setAuthToken } from "../lib/http"
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
-    token: localStorage.getItem("token") || "",
+    token: localStorage.getItem("token") || null,
     user: JSON.parse(localStorage.getItem("user") || "null"),
   }),
+
   actions: {
-    async register(payload) {
-      const { data } = await http.post("/register", payload)
-      this.setSession(data)
-    },
     async login(payload) {
-      const { data } = await http.post("/login", payload)
-      this.setSession(data)
+      const res = await http.post("/login", payload)
+
+      // attendu: { user: {...}, token: "..." }
+      const { user, token } = res.data
+
+      this.token = token
+      this.user = user
+
+      localStorage.setItem("token", token)
+      localStorage.setItem("user", JSON.stringify(user))
+
+      setAuthToken(token)
+      return res.data
     },
+
     async logout() {
       try { await http.post("/logout") } catch {}
-      this.token = ""
+
+      this.token = null
       this.user = null
       localStorage.removeItem("token")
       localStorage.removeItem("user")
-    },
-    setSession(data) {
-      this.token = data.token
-      this.user = data.user
-      localStorage.setItem("token", data.token)
-      localStorage.setItem("user", JSON.stringify(data.user))
+      setAuthToken(null)
+
+      // ✅ redirect vers login
+      await router.push("/auth/login")
     },
   },
 })

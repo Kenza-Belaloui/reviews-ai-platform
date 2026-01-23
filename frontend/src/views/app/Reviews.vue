@@ -167,13 +167,15 @@ onMounted(load)
 
       <select
         v-model="sentiment"
-        class="w-full md:w-48 px-3 py-2 rounded-xl border border-slate-700/60 bg-white/5"
+        class="px-3 py-2 rounded-xl border border-slate-700/60 bg-white/5 text-slate-100
+              focus:outline-none focus:ring-2 focus:ring-indigo-500/40"
       >
-        <option value="">Tous</option>
-        <option value="positive">Positive</option>
-        <option value="neutral">Neutral</option>
-        <option value="negative">Negative</option>
+        <option class="bg-slate-900 text-slate-100" value="">Tous</option>
+        <option class="bg-slate-900 text-slate-100" value="positive">Positive</option>
+        <option class="bg-slate-900 text-slate-100" value="neutral">Neutral</option>
+        <option class="bg-slate-900 text-slate-100" value="negative">Negative</option>
       </select>
+
 
       <button class="px-3 py-2 rounded-xl border border-slate-700/60 hover:bg-white/5" @click="load">
         ↻

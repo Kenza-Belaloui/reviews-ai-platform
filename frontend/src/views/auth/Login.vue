@@ -82,7 +82,6 @@ async function submit() {
 
     <!-- quick admin hint (optionnel) -->
     <div class="text-xs text-slate-400 border-t border-slate-700/50 pt-4">
-      Admin (si seed) : <span class="text-slate-200">admin@reviews.local</span> / <span class="text-slate-200">Admin12345!</span>
     </div>
   </div>
 </template>

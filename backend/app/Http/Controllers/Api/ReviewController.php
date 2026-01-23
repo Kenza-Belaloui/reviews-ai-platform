@@ -58,28 +58,29 @@ class ReviewController extends Controller
         return new ReviewResource($review);
     }
 
-    public function update(UpdateReviewRequest $request, Review $review)
+    public function update(Request $request, Review $review)
     {
-        $this->authorize('update', $review);
-
-        $review->update([
-            'content' => $request->validated()['content'],
-            // option: remettre à null pour signaler re-analyse (si tu ajoutes un observer updated)
-            'sentiment' => null,
-            'score' => null,
-            'topics' => null,
-        ]);
-
-        $review->load('user');
-
-        return new ReviewResource($review);
+    $user = $request->user();
+    if ($user->role !== 'admin' && $review->user_id !== $user->id) {
+        return response()->json(['message' => 'Forbidden'], 403);
     }
 
-    public function destroy(Review $review)
-    {
-        $this->authorize('delete', $review);
-        $review->delete();
+    $data = $request->validate([
+        'content' => ['required','string','min:3'],
+    ]);
 
-        return response()->json(['message' => 'Deleted']);
+    $review->update($data);
+    return response()->json($review);
+    }
+
+    public function destroy(Request $request, Review $review)
+    {
+    $user = $request->user();
+    if ($user->role !== 'admin' && $review->user_id !== $user->id) {
+        return response()->json(['message' => 'Forbidden'], 403);
+    }
+
+    $review->delete();
+    return response()->json(['ok' => true]);
     }
 }

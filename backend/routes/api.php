@@ -34,7 +34,11 @@ Route::middleware('auth:sanctum')->group(function () {
     
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
 
-    Route::middleware('admin')->group(function () {
-    Route::get('/admin/users', [UserAdminController::class, 'index']);
+    Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/reviews', [ReviewController::class, 'index']);
+    Route::post('/reviews', [ReviewController::class, 'store']);
+    Route::put('/reviews/{review}', [ReviewController::class, 'update']);
+    Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
     });
+
 });

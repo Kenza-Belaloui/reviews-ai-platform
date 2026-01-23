@@ -37,13 +37,11 @@ const router = createRouter({ history: createWebHistory(), routes })
 router.beforeEach((to) => {
   const auth = useAuthStore()
 
-  if (to.meta.requiresAuth && !auth.token) {
-    return { name: "login" }
-  }
+  const isAuthPage = to.path.startsWith("/auth")
+  const isLoggedIn = !!auth.token
 
-  if (to.meta.requiresAdmin && auth.user?.role !== "admin") {
-    return { name: "dashboard" }
-  }
+  if (!isLoggedIn && !isAuthPage) return "/auth/login"
+  if (isLoggedIn && isAuthPage) return "/"
 })
 
 
