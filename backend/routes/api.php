@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AnalyzeController;
 use App\Http\Controllers\Api\ReviewController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\ExportController;
+use App\Http\Controllers\Api\Admin\UserAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,4 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/reviews', [ReviewController::class, 'store']);
     
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy']);
+
+    Route::middleware('admin')->group(function () {
+    Route::get('/admin/users', [UserAdminController::class, 'index']);
+    });
 });

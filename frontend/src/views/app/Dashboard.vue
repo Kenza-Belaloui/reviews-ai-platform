@@ -8,6 +8,8 @@ import { downloadCsv } from "../../lib/download"
 const toast = useToastStore()
 const loading = ref(true)
 const data = ref(null)
+const newContent = ref("")
+const creating = ref(false)
 
 async function load() {
   loading.value = true
@@ -35,6 +37,24 @@ function pill(sentiment) {
   if (sentiment === "positive") return "bg-green-500/15 text-green-200 border-green-500/30"
   if (sentiment === "negative") return "bg-red-500/15 text-red-200 border-red-500/30"
   return "bg-slate-500/15 text-slate-200 border-slate-500/30"
+}
+
+async function createReview() {
+  if (!newContent.value.trim()) {
+    toast.show("Écris un commentaire avant d’envoyer", "error")
+    return
+  }
+  creating.value = true
+  try {
+    await http.post("/reviews", { content: newContent.value })
+    toast.show("Review envoyée ✅", "success")
+    newContent.value = ""
+    await load() // refresh dashboard
+  } catch {
+    toast.show("Impossible d’envoyer la review", "error")
+  } finally {
+    creating.value = false
+  }
 }
 
 onMounted(load)
@@ -88,6 +108,40 @@ onMounted(load)
         </div>
       </div>
     </div>
+
+    <!-- User quick action -->
+  <div v-if="!loading && data?.scope === 'mine'" class="glass glow rounded-2xl p-4">
+    <div class="flex items-start justify-between gap-3">
+      <div>
+        <div class="font-semibold">Nouvelle review</div>
+        <div class="text-sm text-slate-300">Donne ton avis et l’IA analysera automatiquement.</div>
+      </div>
+      <router-link
+        class="px-3 py-2 rounded-xl border border-slate-700/60 hover:bg-white/5 text-sm"
+        to="/reviews"
+      >
+        Voir mes reviews
+      </router-link>
+    </div>
+
+    <div class="mt-3 space-y-2">
+      <textarea
+        v-model="newContent"
+        rows="4"
+        class="w-full px-3 py-2 rounded-xl border border-slate-700/60 bg-white/5 text-slate-100"
+        placeholder="Ex: Très bonne app, rapide, mais il manque..."
+      />
+      <div class="flex justify-end">
+        <button
+          class="px-4 py-2 rounded-xl border border-slate-700/60 bg-white/10 hover:bg-white/15"
+          :disabled="creating"
+          @click="createReview"
+        >
+          {{ creating ? "Envoi..." : "Envoyer" }}
+        </button>
+      </div>
+    </div>
+  </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div class="glass glow rounded-2xl p-4">

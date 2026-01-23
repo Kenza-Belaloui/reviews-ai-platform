@@ -1,8 +1,14 @@
-**/.env
-**/vendor
-**/node_modules
-**/storage/*.key
-**/storage/logs
-**/storage/framework
-**/.idea
-**/.vscode
+# backend
+/backend/vendor
+/backend/.env
+/backend/database/database.sqlite
+
+# frontend
+/frontend/node_modules
+/frontend/dist
+
+# OS / IDE
+.DS_Store
+*.log
+.vscode
+.idea
