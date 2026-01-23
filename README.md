@@ -19,7 +19,7 @@ Plateforme SaaS d’analyse d’avis clients : authentification sécurisée, rô
 - Dashboard Admin (scope: all)  
   ![](docs/screenshots/04-dashboard-admin.png)
 
-- Admin Panel — Utilisateurs (pagination + recherche)  
+- Telechargement Csv — Utilisateurs 
   ![](docs/screenshots/06-export-csv.png)
 
 ---
