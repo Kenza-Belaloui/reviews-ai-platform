@@ -1,14 +1,57 @@
-# backend
-/backend/vendor
-/backend/.env
-/backend/database/database.sqlite
-
-# frontend
-/frontend/node_modules
-/frontend/dist
-
-# OS / IDE
+####################################
+# OS / Editor
+####################################
 .DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
+
+####################################
+# Logs
+####################################
 *.log
-.vscode
-.idea
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+####################################
+# Backend - Laravel
+####################################
+backend/vendor/
+backend/node_modules/
+backend/.env
+backend/.env.*
+backend/storage/logs/
+backend/storage/framework/cache/
+backend/storage/framework/sessions/
+backend/storage/framework/views/
+backend/bootstrap/cache/
+
+# SQLite database (ne pas versionner)
+backend/database/database.sqlite
+
+####################################
+# Frontend - Vue / Vite
+####################################
+frontend/node_modules/
+frontend/dist/
+frontend/.env
+frontend/.env.*
+
+####################################
+# Build / Cache
+####################################
+*.cache
+*.tmp
+
+####################################
+# Tests coverage
+####################################
+coverage/
+
+####################################
+# Optional (keep screenshots!)
+####################################
+# docs/screenshots/   <-- ON NE L'IGNORE PAS
